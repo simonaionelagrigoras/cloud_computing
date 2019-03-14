@@ -1,0 +1,395 @@
+{
+	"info": {
+		"_postman_id": "919e49fb-12f4-4317-b140-11db131583fb",
+		"name": "homework_1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost/cc/homework_1/app/simpleApi.php",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/cc/homework_1/app/simpleApi.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"cc",
+						"homework_1",
+						"app",
+						"simpleApi.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost/cc/homework_1/app/authenticationApi.php",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer 612e648bf9594adb50844cad6895f2cf",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"user_id_to_delete\" : \"99\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost/cc/homework_1/app/authenticationApi.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"cc",
+						"homework_1",
+						"app",
+						"authenticationApi.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost/cc/homework_1/app/authenticationApi.php",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer 612e648bf9594adb50844cad6895f2cf",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"Ana3\",\r\n    \"user_email\": \"ana4@aremere.com\",\r\n    \"age\": 34\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost/cc/homework_1/app/authenticationApi.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"cc",
+						"homework_1",
+						"app",
+						"authenticationApi.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost/cc/homework_2/app/reviews",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/cc/homework_2/app/reviews",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"cc",
+						"homework_2",
+						"app",
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost/cc/homework_2/app/reviews/1",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer 934f648ty9567ghg50822sdf6898k2cf",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/cc/homework_2/app/reviews/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"cc",
+						"homework_2",
+						"app",
+						"reviews",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost/cc/homework_2/app/products/1/reviews",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/cc/homework_2/app/products/1/reviews",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"cc",
+						"homework_2",
+						"app",
+						"products",
+						"1",
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost/cc/homework_2/app/products/3/review",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer 934f648ty9567ghg50822sdf6898k2cf",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"description\": \"Verry good quality\",\n    \"rating\": 5\n}"
+				},
+				"url": {
+					"raw": "http://localhost/cc/homework_2/app/products/3/review",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"cc",
+						"homework_2",
+						"app",
+						"products",
+						"3",
+						"review"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost/cc/homework_2/app/products",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer 732e648bf9594weq50844rtg6895f2cf",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"product_id\": 1,\n    \"sku\": \"TV-65Q6FN\",\n    \"product_name\": \"Televizor QLED Smart Samsung 65Q6FN\",\n    \"description\": \"Televizor QLED Smart Samsung 65Q6FN, 165cm, 4k UHD \"\n}"
+				},
+				"url": {
+					"raw": "http://localhost/cc/homework_2/app/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"cc",
+						"homework_2",
+						"app",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost/cc/homework_2/app/products",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer 612e648bf9594adb50844cad6895f2cf",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sku\": \"42504640\",\n    \"product_name\": \"Telefon mobil Galaxy A6 (2018) Samsung\",\n    \"vendor_id\": 3,\n    \"description\": \"Telefon mobil Galaxy A6 (2018) Samsung, 5.6, 32 GB, 3 GB, Auriu\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost/cc/homework_2/app/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"cc",
+						"homework_2",
+						"app",
+						"products"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost/cc/homework_2/app/products/1/reviews",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer 732e648bf9594weq50844rtg6895f2cf",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/cc/homework_2/app/products/1/reviews",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"cc",
+						"homework_2",
+						"app",
+						"products",
+						"1",
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost/cc/homework_2/app/vendors",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer 612e648bf9594adb50844cad6895f2cf",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/cc/homework_2/app/vendors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"cc",
+						"homework_2",
+						"app",
+						"vendors"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost/cc/homework_2/app/vendors",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer 612e648bf9594adb50844cad6895f2cf",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"company_name\": \"SC MagazinulMeu SA\",\r\n    \"email\": \"contact@maq.com\",\r\n    \"cui\": \"7859664\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost/cc/homework_2/app/vendors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"cc",
+						"homework_2",
+						"app",
+						"vendors"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
