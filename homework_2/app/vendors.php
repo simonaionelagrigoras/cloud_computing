@@ -10,10 +10,15 @@
 $response = [];
 $responseCode = 200;
 $start = microtime(true);
+$vendor = null;
 function init(){
     header("Content-Type: application/json; charset=UTF-8");
 
     require_once('Vendor.php');
+
+    global $vendor;
+    $vendor = new Vendor();
+
 }
 
 function authenticate(){
@@ -23,7 +28,7 @@ function authenticate(){
     }
     $authorized = false;
     $api_key = str_replace('Bearer ', '', $headers['Authorization']);
-    $encodedKey = file_get_contents('../storage/auth.txt');
+    $encodedKey = file_get_contents('../storage/auth_admin.txt');
     // this could be a MYSQL query that parses an API Key table, for example
     if($api_key == base64_decode($encodedKey)) {
         $authorized = true;
@@ -80,6 +85,7 @@ function checkBodyPatchRequest(){
 
 function runAddRequest(){
     global $responseCode;
+    global $vendor;
     $postData = checkBodyRequest();
 
     if(isset($postData['error'])){
@@ -87,7 +93,7 @@ function runAddRequest(){
         $responseCode = 400;
         return $postData;
     }
-    $vendor = new Vendor();
+
     $response = $vendor->createVendor($postData['company_name'], $postData['email'], $postData['cui']);
     $responseCode = 200;
 
@@ -96,6 +102,7 @@ function runAddRequest(){
 
 function runPatchRequest(){
     global $responseCode;
+    global $vendor;
     $postData = checkBodyPatchRequest();
 
     if(isset($postData['error'])){
@@ -103,7 +110,6 @@ function runPatchRequest(){
         $responseCode = 400;
         return $postData;
     }
-    $vendor = new Vendor();
     //$response = $vendor->updateVendor([]);
     $responseCode = 200;
 
@@ -123,6 +129,12 @@ if(!authenticate()){
         case 'PATCH':
             $response = runPatchRequest();
             break;
+        case 'GET':
+            $response = $vendor->getVendorsList();
+            if(isset($response['error'])){
+                $responseCode = 503;
+            }
+            break;
         default:
             $response = ['error' => 'Unrecognized request type'];
     }
@@ -134,6 +146,10 @@ if(!authenticate()){
 
 $time_elapsed_secs = microtime(true) - $start;
 http_response_code($responseCode);
-$response['http_status'] = $responseCode;
-$response['time'] = $time_elapsed_secs;
+header('X-PHP-Response-Code: ' . $responseCode, true, $responseCode);
+if(!in_array($responseCode, [200,201])){
+    $response['http_status'] = $responseCode;
+    $response['time'] = $time_elapsed_secs;
+}
+
 echo json_encode($response);
