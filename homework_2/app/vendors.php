@@ -100,7 +100,7 @@ function runAddRequest(){
     return $response;
 }
 
-function runPatchRequest(){
+function runPatchRequest($vendorId){
     global $responseCode;
     global $vendor;
     $postData = checkBodyPatchRequest();
@@ -110,10 +110,29 @@ function runPatchRequest(){
         $responseCode = 400;
         return $postData;
     }
-    //$response = $vendor->updateVendor([]);
+
+    $response = $vendor->updateVendor($vendorId, $postData);
+    if(isset($response['error'])){
+        $responseCode = 400;
+        return $response;
+    }
     $responseCode = 200;
 
-    //return $response;
+    return $response;
+}
+function getParam($variableName, $default = null) {
+
+    // Was the variable actually part of the request
+    if(array_key_exists($variableName, $_REQUEST))
+        return $_REQUEST[$variableName];
+
+    // Was the variable part of the url
+    $urlParts = explode('/', preg_replace('/\?.+/', '', $_SERVER['REQUEST_URI']));
+    $position = array_search($variableName, $urlParts);
+    if($position !== false && array_key_exists($position+1, $urlParts))
+        return $urlParts[$position+1];
+
+    return $default;
 }
 
 init();
@@ -124,10 +143,28 @@ if(!authenticate()){
     switch ($_SERVER['REQUEST_METHOD']){
         case 'POST':
             $response = runAddRequest();
-            $responseCode = 201;
+            if(isset($response['code_error']) && isset($response['error'])){
+                $responseCode = $response['code_error'];
+                unset($response['code_error']);
+            }else{
+                $responseCode = 201;
+            }
+
             break;
         case 'PATCH':
-            $response = runPatchRequest();
+
+            $vendorId = getParam('vendors');
+            if(empty($vendorId)){
+                $response = ['error' => 'Vendor id is required'];
+            }
+            $response = runPatchRequest($vendorId);
+            if(isset($response['code_error']) && isset($response['error'])){
+                $responseCode = $response['code_error'];
+                unset($response['code_error']);
+            }else{
+                $responseCode = 200;
+            }
+
             break;
         case 'GET':
             $response = $vendor->getVendorsList();
@@ -139,7 +176,7 @@ if(!authenticate()){
             $response = ['error' => 'Unrecognized request type'];
     }
 
-    if(isset($response['error'])){
+    if(isset($response['error']) && ($responseCode == 201 || $responseCode==200 || is_null($responseCode))){
         $responseCode = 400;
     }
 }

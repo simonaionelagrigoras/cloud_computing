@@ -92,7 +92,6 @@ try{
             }
             break;
         case 'GET':
-
             $response = $review->getReviewsList();
             if(!count($response)){
                 $response = ["notice" =>  "There are no reviews "];
@@ -116,6 +115,9 @@ try{
     $responseCode = 500;
     $response = ['error' => 'Internal server Error. ' . $e->getMessage()];
 }catch (Exception $e){
+    $responseCode = 500;
+    $response = ['error' => 'Internal server Error. ' . $e->getMessage()];
+}catch (ParseError $e){
     $responseCode = 500;
     $response = ['error' => 'Internal server Error. ' . $e->getMessage()];
 }

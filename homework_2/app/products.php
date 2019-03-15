@@ -80,10 +80,10 @@ function checkBodyPatchRequest(){
 
     # Get as an object
     $postData = json_decode($postDataJson, true);
-    if(!isset($postData['product_id'])){
-        $response = ['error' => 'Field %product_id% is required for this operation'];
-        return $response;
-    }
+//    if(!isset($postData['product_id'])){
+//        $response = ['error' => 'Field %product_id% is required for this operation'];
+//        return $response;
+//    }
     if(!isset($postData['sku']) && !isset($postData['product_name']) && !isset($postData['description'])){
         $response = ['error' => 'You need to send at least one of the fields %sku%, %product_name% or %description% for this operation'];
         return $response;
@@ -172,7 +172,7 @@ function getUrlParam($productId) {
     return $lastPart;
 }
 
-function runPatchRequest(){
+function runPatchRequest($productId){
     global $responseCode;
     global $product;
     $postData = checkBodyPatchRequest();
@@ -181,7 +181,7 @@ function runPatchRequest(){
         $responseCode = 400;
         return $postData;
     }
-    $productId = $postData['product_id'];
+
     $response = $product->updateProduct($productId, $postData);
     $responseCode = 200;
 
@@ -206,6 +206,11 @@ try{
                         $response = ['error' => 'Consumer is not authorized to access %resources'];
                     }else {
                         $response = runAddReview($productId);
+                        if(isset($response['error'])){
+                            $responseCode = 404;
+                        }else{
+                            $responseCode = 201;
+                        }
                     }
                 } else {
                     if(!authenticate("admin") || !authenticate("vendor")){
@@ -213,18 +218,24 @@ try{
                         $response = ['error' => 'Consumer is not authorized to access %resources'];
                     }else {
                         $response = runAddRequest();
+                        $responseCode = 201;
                     }
                 }
                 //var_dump(pathinfo ("http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"));
-                $responseCode = 201;
 
-            break;
+             break;
         case 'PATCH':
+            $productId = getParam('products');
+            var_dump($productId);
+            if(empty($productId) || is_null($productId)){
+                $response = ['error' => 'Product_id is required'];
+                break;
+            }
             if(!authenticate("admin") && !authenticate("vendor")){
                 $responseCode = 403;
                 $response = ['error' => 'Consumer is not authorized to access %resources'];
             }else {
-                $response = runPatchRequest();
+                $response = runPatchRequest($productId);
             }
             break;
         case 'GET':
@@ -258,7 +269,7 @@ try{
             $response = ['error' => 'Unrecognized request type'];
     }
 
-    if(isset($response['error'])){
+    if(isset($response['error']) && ($responseCode == 201 || $responseCode==200 || is_null($responseCode))){
         $responseCode = 400;
     }
 }catch (Error $e){

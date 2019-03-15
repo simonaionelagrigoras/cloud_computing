@@ -42,6 +42,9 @@ class Product{
             $query = $this->dbConnection->prepare($sql);
             $query->execute();
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            if (!count($result)){
+                return ['error' => "Product with id " .$productId . "does not exist"];
+            }
             return $result;
         }catch (Exception $e){
             return ['error' => "Could not get the products: " . $e->getMessage()];
@@ -82,6 +85,14 @@ class Product{
 
     public function updateProduct($productId, $data)
     {
+        $sql = "SELECT * FROM products WHERE product_id=" . $productId;
+        $query = $this->dbConnection->prepare($sql);
+        $query->execute();
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if(!count($result)){
+            return ['error' => 'Product with id ' . $productId . ' doesn\'t exist'];
+        }
         $update = '';
         foreach ($data as $key => $value){
             switch($key){
