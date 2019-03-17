@@ -60,6 +60,15 @@ class Product{
         if(!count($result)){
             return ['error' => 'Vendor with id ' . $vendorId . ' doesn\'t exist'];
         }
+
+        $sql = "SELECT * FROM products WHERE vendor_id=" . $vendorId . ' and sku="' . $sku . '"';
+        $query = $this->dbConnection->prepare($sql);
+        $query->execute();
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if(count($result)){
+            return ['error' => 'Vendor with id ' . $vendorId . ' already has a product with the same sku ' . $sku, 'code_error'=>409];
+        }
         if(strlen($sku) <3){
             return ['error' => 'SKU must have at least 3 characters'];
         }
@@ -85,7 +94,7 @@ class Product{
 
     public function updateProduct($productId, $data)
     {
-        $sql = "SELECT * FROM products WHERE product_id=" . $productId;
+        $sql = "SELECT product_id FROM products WHERE product_id=" . $productId;
         $query = $this->dbConnection->prepare($sql);
         $query->execute();
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -93,6 +102,19 @@ class Product{
         if(!count($result)){
             return ['error' => 'Product with id ' . $productId . ' doesn\'t exist'];
         }
+        $product = $result[0];
+        if(isset($data['sku']) && !empty($data['sku'])){
+            $sql = 'SELECT * FROM products WHERE sku="' . $data['sku'] . '"and product_id<>' . $product['product_id'];
+
+            $query = $this->dbConnection->prepare($sql);
+            $query->execute();
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            if(count($result)){
+                return ['error' => 'A product with the same sku ' . $data['sku'] . ' already exist', 'code_error' => 409];
+            }
+        }
+
         $update = '';
         foreach ($data as $key => $value){
             switch($key){

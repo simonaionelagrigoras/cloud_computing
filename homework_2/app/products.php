@@ -23,7 +23,6 @@ function init(){
     global $review;
     $product = new Product();
     $review  = new Review();
-
 }
 
 function authenticate($type){
@@ -213,12 +212,17 @@ try{
                         }
                     }
                 } else {
-                    if(!authenticate("admin") || !authenticate("vendor")){
+                    if(!authenticate("admin") && !authenticate("vendor")){
                         $responseCode = 403;
                         $response = ['error' => 'Consumer is not authorized to access %resources'];
                     }else {
                         $response = runAddRequest();
-                        $responseCode = 201;
+                        if(isset($response['code_error']) && isset($response['error'])){
+                            $responseCode = $response['code_error'];
+                            unset($response['code_error']);
+                        }else{
+                            $responseCode = 201;
+                        }
                     }
                 }
                 //var_dump(pathinfo ("http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"));
@@ -244,9 +248,11 @@ try{
             if(!empty($productId)){
 
                 $param  = getUrlParam($productId);
+
                 if(strlen($param) && $param != 'reviews'){
                     $responseCode = 404;
-                    return ['error' => 'Request does not match any route'];
+                    $response = ['error' => 'Request does not match any route'];
+                    break;
                 }
                 if(strlen($param)){
                     $response = $review->getReviewsList($productId);
